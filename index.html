@@ -18,6 +18,9 @@ $('body').terminal({
     reset: function() {
         location.reload()
     },
+    ps: function() {
+        this.echo("PID            PROCESS_NAME\n1              terminal-tun\n2              action-tracker\n2              ps")
+    },
     membank: function(address) {
         if (address === "0xffa0") {
             this.echo("ot42xo5leif\nz3ebewx54i\nrlfo1k4b9ak\nfaem09cafzg")
