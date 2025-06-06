@@ -1,0 +1,1 @@
+# scp-1461-ru-interactive
