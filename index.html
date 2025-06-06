@@ -8,7 +8,13 @@
 <script>
 $('body').terminal({
     help: function() {
-        this.echo("ls - list accessable files and directories\ncat <filename> - get file's content\nrm <filename> - delete file\nps - get current terminal's running processes");
+        this.echo("ls - list accessable files and directories\ncat <filename> - get file's content\nrm <filename> - delete file\nps - get current terminal's running processes\nreset - resets current terminal");
+    },
+    reset: function() {
+        location.reload()
+    },
+    rm: function(filename) {
+        this.echo("Can not delete " + filename + ": FORBIDDEN, no rights.")
     },
     ls: function(){
         this.echo("forum_save_1.txt  forum_save_2.txt  forum_save_3.txt  forum_save_4.txt  forum_save_5.txt")
