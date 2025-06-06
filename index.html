@@ -8,19 +8,73 @@
 <script>
 $('body').terminal({
     help: function() {
-        this.echo("ls - list accessable files and directories\ncat <filename> - get file's content\nrm <filename> - delete file\nps - get current terminal's running processes\nreset - resets current terminal");
+        this.echo("ls - list accessable files and directories\ncat <filename> - get file's content\nrm <filename> - delete file\nps - get current terminal's running processes\nreset - resets current terminal\ninfo - information about currently connected console host\nmembank <bank address>.<key -- optional> - randomly access user accessable memory by address to get it's data. For encrypted memory banks key may be provided.");
+    },
+    info: function() {
+        this.echo("\n ________  ____  ____   _______     ___   ____      ____  ________  _______     _  \n|  __   _||_  _||_  _| |_   __ \\  .'   `.|_  _|    |_  _||_   __  ||_   __ \\   | |\n|_/  / /    \\ \\  / /     | |__) |/  .-.  \\ \\ \\  /\\  / /    | |_ \\_|  | |__) |  | | \n   .'.' _    > `' <      |  ___/ | |   | |  \\ \\/  \\/ /     |  _| _   |  __ /   | | \n _/ /__/ | _/ /'`\\ \\_   _| |_    \\  `-'  /   \\  /\\  /     _| |__/ | _| |  \\ \\_ |_| \n|________||____||____| |_____|    `.___.'     \\/  \\/     |________||____| |___|(_)\n\n")
+        this.echo("HOST:\n  SCP-1461\n  ZX Spectrum modified\n  128 kb real memory\n  ZILOG Z80 CPU clocked at 61.2 Ghz, real mode, long mode emulated by terminal (translator).\n  Processor CPUID: NO INSTRUCTION, REFERRING TO ROM\n    ZILOG z80 unlocked, by Sergey\n    IN31NWP9\n\n")
+        this.echo("TERMINAL:\n  RISC-V machine, SCP Linux\n  Secure tunnel\n  SCP FOUNDATION\n  SECURE. CONTAIN. PROTECT.\n\n")
     },
     reset: function() {
         location.reload()
+    },
+    membank: function(address) {
+        if (address === "0xffa0") {
+            this.echo("ot42xo5leif\nz3ebewx54i\nrlfo1k4b9ak\nfaem09cafzg")
+        }
+        if (address === "0xffa0.IN31NWP9") {
+            this.echo("Привет, сынишка. Надеюсь ты читаешь это в добром здравии. Мне жаль, что я не могу тебе это сказать напрямую, ты ещё слишком маленький был."),
+            this.echo("Мне надо признаться, что я лукавил, когда говорил, что я работаю на крупную международную компанию."),
+            this.echo("Когда Союз распался наш НИИ закрыли, и я остался без работы. Но тебя же кормить надо было, потому мне пришлось крутиться как мог."),
+            this.echo("Я связался с очень опасными людьми. Они давали мне денег, а в замен я время от времени должен был им помогать с не очень порядочными делами."),
+            this.echo("Всё шло неплохо. Деньги были, крыша над головой и еда тоже. Ты рос здоровым и сильным, да ещё и умным каким. Но всё хорошее когда-нибудь заканчивается"),
+            this.echo("Недавно меня попросили достать некоторую информацию. Раньше как-то не хотелось читать то, что я вытаскиваю из закрытых архивов. Меньше знаешь, крепче спишь, наверное."),
+            this.echo("Но тогда любопытство меня победило. И я узнал страшные и странные вещи. Как оказалось, всё это время я помогал воровать у какой-то секретной организации документы о хранимых ими неких объектах."),
+            this.echo('Действительно, меньше знаешь, лучше спишь. Я сказал своим "друзьям", что я не собираюсь так рисковать собой ради них. Они разозлились и угрожали меня найти.'),
+            this.echo("В общем, мне надо было уехать. Я не хотел, чтобы ища меня, они нашли тебя."),
+            this.echo("Расти большим и сильным. Твоя бабушка о тебе позаботится. Я надеюсь, что мы ещё когда-нибудь увидимся.\nЯ люблю тебя.")
+        }
+        else {
+            this.echo((Math.random() + 1).toString(36).substring(2)),
+            this.echo((Math.random() + 1).toString(36).substring(2)),
+            this.echo((Math.random() + 1).toString(36).substring(2)),
+            this.echo((Math.random() + 1).toString(36).substring(2))
+        }
     },
     rm: function(filename) {
         this.echo("Can not delete " + filename + ": FORBIDDEN, no rights.")
     },
     ls: function(){
-        this.echo("forum_save_1.txt  forum_save_2.txt  forum_save_3.txt  forum_save_4.txt  forum_save_5.txt")
+        this.echo("toscpstaff.txt   forum_save_11.03.XXXX.txt   chat_save_20.03.XXXX.txt  chat_save_03.04.XXXX.txt  chat_save_08.04.XXXX.txt")
+    },
+    cat: function(filename) {
+        if (filename === 'forum_save_11.03.XXXX.txt'){
+            this.echo("netblaster: Крч, я попробовал эту демку. Огонь. Почти 3д. Прикольно что ты ещё и мелодию при загрузке с кассеты смог сделать.\nquak: Да, крутая демка. Гуд джоб @thelonix\nthelonix: Спасибо, долго делал, аврал на работе был целый месяц.\nklaster: Неплохо, неплохо. Только вы не видели ещё трассировку на спектруме.\nquak: Не видел\nklaster: Видео могу скинуть.\nquak: Сам предложил. Ждём\nklaster: ████://██████.██/████/██████\nquak: O_o Это твой спектрум на видео @klaster?\nklaster: Да\nnetblaster: Обалдеть. У тебя точно спектрум? Там точно 48 кб памяти?\nklaster: Не памяти побольше впаяно. Она мне от бати досталась. Он её вроде как-то доработал, чтобы быстрее работал. Говорит, мол, крутой комп, ни у кого такого нет, прогать учил. А когда он слёг, земля ему пухом, спека досталась мне.\nthelonix: охренеть…\n    Ветка форума удалена из публичного доступа, ведутся поиски сохранённых копий ветки и приложенного видеофайла")
+        }
+        else if (filename === 'chat_save_20.03.XXXX.txt'){
+            this.echo("gater: Привет, klaster.\nklaster: Привет. Чего надо?\ngater: Это же твоё видео? ████://██████.██/████/██████\nklaster: Да.\ngater: Впечатляющая работа. Ваш отец был бы горд за вас\nklaster: При чём тут мой отец? Кто вы?\ngater: Скажем так, я его давний друг. Мы работали вместе. Мои соболезнования.\nklaster: Не утруждай себя, это было давно. А теперь ответь, что тебе от меня надо?\ngater: Твой папа проделал невероятную работу. Так и ты пошёл по его стопам. Почему бы тебе не поработать на меня. Плачу хорошие деньги, тебе они не помешают.\nklaster: У меня всё хорошо, и работать на мутных типов я не собираюсь. Почему бы вам не поискать дурачка в другом месте.\ngater: Я бы не переходил на грубости. Я повторюсь, деньги тебе не помешаЮТ. Понимаешь о чём я?\nklaster: Нет, не понимаю. И не пиши мне больше.\ngater: О, ты сам ко мне обратишься. Ещё спишемся.\n    Личность за псевдонимом gater устанавливается.")
+        }
+        else if (filename === 'chat_save_03.04.XXXX.txt'){
+            this.echo("klaster: Да кто ты такой?\ngater: Я же уже писал. Я – друг твоего отца.\nklaster: Как только ты написал, меня выгнали с работы, у меня внезапно появились долги, а на счету копейки. Нахрена ты это делаешь?\ngater: Всего-то чтобы привлечь твоё внимание. Твой почивший отец нам был должен. А теперь должен нам ты.\ngater: Но всего одна услуга, и все проблемы уйдут. Тебя вернут на работу, долги исчезнут, а заработанные тобой деньги с лихвой возместят физические и моральные потери. Вообще, тебе даже на работу не придётся возвращаться, настолько ты станешь богат.\nklaster: Хорошо стелешь.\ngater: Потому что я не вру.\nklaster: Так что тебе надо? Ты так и не ответил ни разу.\ngater: Возьмёшься за работу?\nklaster: А у меня есть выбор?\ngater: Выбор всегда есть. И тут есть правильный.\nklaster: Окей. Что вам нужно?\ngater: Твой интересный компьютер с ████://██████.██/████/██████\ngater: Я полагаю, он не только демо так быстро способен считать?\nklaster: да…\ngater: Ты же сможешь посчитать закрытый ключ по открытому?\n_______ EOF ________")
+        }
+        else if (filename === 'chat_save_08.04.XXXX.txt'){
+            this.echo("klaster: Бля, чувак, я сделал как ты хотел, я отправил тебе этот архив. Твоя очередь мне помочь!\ngater: Не торопись. Есть ещё один шлюз, который надо взломать.\nklaster: Мы договаривались, что я сделаю это один раз… А ты ещё меня хочешь натянуть\ngater: Такого условия не было. Ты согласился на услугу. А содержание услуги мы не обсуждали.\ngater: Терпи, недолго осталось.\nklaster: Ты офигел? И сколько таких услуг я буду делать? Пока не сдохну?\ngater: Не драматизируй. Пара дел и всё наладится.\nklaster: Мне бы в полицию обратиться\ngater: Ну да, и загреметь как сообщник. Не беспокойся, вскоре ты станешь своим, я познакомлю тебя с остальными.\n\nSYSTEM: ИСТОРИЯ ОБЩЕНИЯ ВОССТАНОВЛЕНА\ngater: Чёрт возьми. К тебе едут.\nklaster: Что? Кто едет?\ngater: Для тебя не особо важно. Почисти все носители. И спектрум свой сломай.\nklaster: Чё? Да ты охренел! Ты обещал! Ты обещал, что мне ничего не грозит! Я же через ваш сетевой шлюз работал!\ngater: Бывает…\ngater: Поторопись, они совсем скоро к тебе приедут, по камерам вижу.\nklaster: Кто?\ngater: Серьёзные господа. Те, чей шлюз ты взломал.\ngater: Знаешь что? В какой-то мере ты действительно поработаешь на нас, пока не сдохнешь.\nklaster: ???\ngater: Ну ты понял. Поторопись, в общем. Ничего не забудь, кроме нас. Нас забудь. Прощай.\nklaster: А? Ты обещал! Вы обещали! Вы обещали, что мне ничего не будет! Что весь огонь вы примете на себя!\nSYSTEM: ПОЛУЧАТЕЛЬ НЕ ДОСТУПЕН\nklaster: Ты куда делся! А ну, сука, вернись!\nSYSTEM: ПОЛУЧАТЕЛЬ НЕ ДОСТУПЕН\nklaster: Пошёл ты нахуй! Гандоны!\nSYSTEM: ПОЛУЧАТЕЛЬ НЕ ДОСТУПЕН")
+        }
+        else if (filename === 'toscpstaff.txt'){
+            this.echo("Этот документ призван помочь освоится в этом окружении.\nНесмотря на то, что ZX Spectrum имеет очень простую ОС с интерпретатором BASIC, тут всё очень похоже на UNIX. Это потому что терминал так работает."),
+            this.echo("ZX Spectrum в этой системе – не более чем процессор с кэш памятью. Весь интерфейс общения с системой сосредоточен в терминальном сервере на RISC-V, потому и похожесть на никсы."),
+            this.echo("Файлы здесь тоже работают не так, как на оригинальном спектруме. Благодаря терминалу файлы, доступные вам, монтируются в вашу домашнюю папку с различных носителей. Очень удобно."),
+            this.echo("Для не понимающих английский - что вы тут делаете вообще? Но всё же я оставлю список команд и большее описание некоторых из них"),
+            this.echo("ls - выводит список файлов и папок в текущей папке\ncat <имяфайла> - выводит содержимое файла\nrm <имяфайла> - удаляет файл (если прав хватит)\nps - список процессов, которые были запущены на спектруме текущей терминальной сессией\nreset - сбрасывает состояние терминала и очищает таблицы памяти. Как будто вы снова подключились."),
+            this.echo("info - выводит информацию о текущей терминальной сессии\nmembank <адрес сегмента>.<ключ -- необязательно> - поскольку Zilog Z80 - процессор без защищённого режима, у пользователя есть возможность обратиться к любому сегменту памяти. Правда, не совсем к любому.\n  Терминал ограничивает доступ к памяти спектрума, принадлежащей другим сессиям. Некоторая память может быть зашифрована, потому можно к адресу приложить ключ, в формате адрес.ключ."),
+            this.echo("Кстати, касательно памяти. По какой-то странной причине, во всех терминальных сессиях адрес сегмента 0xffa0 возвращает одинаковые данные, переписать сегмент не получается.\nПонять, что это такое, пока не удаётся. Терминал сам не адресует эту память программам, так что можешь о ней не волноваться.")
+        }
+        else {
+            this.echo("NO SUCH FILE")
+        }
     }
 }, {
-    greetings: 'Welcome to SCP Linux 14.02 (GNU/Linux 6.15.1-scpmod RISC-V 64-bit) \n \n SCP-1461 limited access terminal. \n---------------\nAccess mode: webgateway\nUser privileges: RESTRICTED\nMultiuser mode: SHARED, PROTECTED\nCPU: Zilog z80\nSystem clock speed: 61.2 Ghz\n---------------\nAvailable resources:\n  Real memory: 8kb\n  Swapped memory: 2gb\n  CPU time: 0.2\n  I/O accessable:\n    Cassette library: connected, restricted\n    Floppy Disc multistorage: connected, restricted\n    HDD farm: connected, forbidden\n    SSD/flash storage: connected, forbidden\n\nFor expanded access rights contact curator.\n\nTunneling connection to SCP-1461 complete!\n Type "help" for info.'
+    greetings: 'Welcome to SCP Linux 14.02 (GNU/Linux 6.15.1-scpmod RISC-V 64-bit) \n \n SCP-1461 limited access terminal.\n\nEstablishing remote console connection to SCP-1461 endpoint...\nSecuring connection...\nRSA handshake complete...\n---------------\nAccess mode: webgateway\nUser privileges: RESTRICTED\nMultiuser mode: SHARED, PROTECTED\nCPU: Zilog z80\nSystem clock speed: 61.2 Ghz\n---------------\nAvailable resources:\n  Real memory: 8kb\n  Swapped memory: 2gb\n  CPU time: 0.2\n  I/O accessable:\n    Cassette library: connected, restricted\n    Floppy Disc multistorage: connected, restricted\n    HDD farm: connected, forbidden\n    SSD/flash storage: connected, forbidden\n\nFor expanded access rights contact curator.\n\nTunneling connection to SCP-1461 complete!\n Type "help" for more info.'
 });
 </script>
 </body>
