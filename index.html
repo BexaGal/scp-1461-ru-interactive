@@ -6,9 +6,53 @@
 </head>
 <body>
 <script>
+function color(name, string) {
+    var colors = {
+        blue:   '#55f',
+        green:  '#4d4',
+        grey:   '#999',
+        red:    '#A00',
+        yellow: '#FF5',
+        violet: '#a320ce',
+        white:  '#fff'
+    }
+    if (colors[name]) {
+        return '[[;' + colors[name] + ';]' + string + ']';
+    } else {
+        return string;
+    }
+}
+b12state = 0;
+const user = 'guest'
+const server = 'zxpower'
+let path = '~';
+function prompt() {
+    const auth = `${user}@${server}`;
+    return `(${color('green', auth)})-[${color('blue', path)}]\$ `;
+}
 $('body').terminal({
+    cd: function(directory){
+        if (directory === "b-12" && path === '~'){
+            path = '~/b-12/'
+        }
+        else if (directory === '..' && path !== '~'){
+            path = '~'
+        }
+        else if (directory === '.'){
+            path = path
+        }
+        else if (directory == 'b-11' && path === '~'){
+            this.echo("FORBIDDEN")
+        }
+        else if (directory === '..' && path === '~'){
+            this.echo("FORBIDDEN")
+        }
+        else {
+            this.echo("No such directory. Please write cd <directory> for changing it, 'cd ..' for returning to parent directory.")
+        }
+    },
     help: function() {
-        this.echo("ls - list accessable files and directories\ncat <filename> - get file's content\nrm <filename> - delete file\nps - get current terminal's running processes\nreset - resets current terminal\ninfo - information about currently connected console host\nmembank <bank address>.<key -- optional> - randomly access user accessable memory by address to get it's data. For encrypted memory banks key may be provided.");
+        this.echo("ls - list accessable files and directories\ncd <directory> - change current directory/folder.\ncat <filename> - get file's content\nrm <filename> - delete file\nps - get current terminal's running processes\nreset - resets current terminal\ninfo - information about currently connected console host\nmembank <bank address>.<key -- optional> - randomly access user accessable memory by address to get it's data. For encrypted memory banks key may be provided.");
     },
     info: function() {
         this.echo("\n ________  ____  ____   _______     ___   ____      ____  ________  _______     _  \n|  __   _||_  _||_  _| |_   __ \\  .'   `.|_  _|    |_  _||_   __  ||_   __ \\   | |\n|_/  / /    \\ \\  / /     | |__) |/  .-.  \\ \\ \\  /\\  / /    | |_ \\_|  | |__) |  | | \n   .'.' _    > `' <      |  ___/ | |   | |  \\ \\/  \\/ /     |  _| _   |  __ /   | | \n _/ /__/ | _/ /'`\\ \\_   _| |_    \\  `-'  /   \\  /\\  /     _| |__/ | _| |  \\ \\_ |_| \n|________||____||____| |_____|    `.___.'     \\/  \\/     |________||____| |___|(_)\n\n")
@@ -45,31 +89,37 @@ $('body').terminal({
         this.echo("Can not delete " + filename + ": FORBIDDEN, no rights.")
     },
     ls: function(){
-        this.echo("toscpstaff.txt   dadletter.txt   forum_save_11.03.XXXX.txt   chat_save_03.04.XXXX.txt  chat_save_05.04.XXXX.txt\nchat_save_08.04.XXXX.txt")
+        if (path === '~/b-12/'){
+            this.echo("./  ../  dadletter.txt   forum_save_11.03.XXXX.txt   chat_save_03.04.XXXX.txt  chat_save_05.04.XXXX.txt\nchat_save_08.04.XXXX.txt")
+        }
+        else {
+            this.echo("./   ../   toscpstaff.txt   b-11/   b-12/")
+        }
+        
     },
     cat: function(filename) {
-        if (filename === 'forum_save_11.03.XXXX.txt'){
+        if (filename === 'forum_save_11.03.XXXX.txt' && path === '~/b-12/'){
             this.echo("netblaster: Крч, я попробовал эту демку. Огонь. Почти 3д. Прикольно что ты ещё и мелодию при загрузке с кассеты смог сделать.\nquak: Да, крутая демка. Гуд джоб @thelonix\nthelonix: Спасибо, долго делал, аврал на работе был целый месяц.\nklaster: Неплохо, неплохо. Только вы не видели ещё трассировку на спектруме.\nquak: Не видел\nklaster: Видео могу скинуть.\nquak: Сам предложил. Ждём\nklaster: ████://██████.██/████/██████\nquak: O_o Это твой спектрум на видео @klaster?\nklaster: Да\nnetblaster: Обалдеть. У тебя точно спектрум? Там точно 48 кб памяти?\nklaster: Не памяти побольше впаяно. Она мне от бати досталась. Он её вроде как-то доработал, чтобы быстрее работал. Говорит, мол, крутой комп, ни у кого такого нет, прогать учил. А когда он слёг, земля ему пухом, спека досталась мне.\nthelonix: охренеть…\n    Ветка форума удалена из публичного доступа, ведутся поиски сохранённых копий ветки и приложенного видеофайла")
         }
-        else if (filename === 'chat_save_20.03.XXXX.txt'){
+        else if (filename === 'chat_save_03.04.XXXX.txt' && path === '~/b-12/'){
             this.echo("gater: Привет, klaster.\nklaster: Привет. Чего надо?\ngater: Это же твоё видео? ████://██████.██/████/██████\nklaster: Да.\ngater: Впечатляющая работа. Ваш отец был бы горд за вас\nklaster: При чём тут мой отец? Кто вы?\ngater: Скажем так, я его давний друг. Мы работали вместе. Он жив.\nklaster: Чего? Я был на его похоронах.\ngater: А ты видел его тело?\nklaster: Он умер в автоаварии. Его хоронили в закрытом гробу.\ngater: Это всё была конспирация. Он должен был исчезнуть, иначе тебе грозила бы опасность. \ngater: Но сейчас ему нужна твоя помощь.\nklaster: Мне кажется, ты мне врёшь.\ngater: Тебе ██ лет, чился в ██-ой Городской школе, живёшь с бабушкой-домохозяйкой и дедушкой-пенсионером милиции.\ngater: С детства любишь программировать, читал романы Жюля Верна. Теперь уверен?\nklister: А где тогда мой отец?\ngater: Он пока занят. Но помощь нужна уже сейчас. Твой отец занят важной работой, и ему нужен твой spectrum.\n    Личность за псевдонимом gater устанавливается.")
         }
-        else if (filename === 'chat_save_03.04.XXXX.txt'){
+        else if (filename === 'chat_save_05.04.XXXX.txt' && path === '~/b-12/'){
             this.echo("SergeyM: Привет, сынишка.\nklaster: Пап?\nSergeyM: Да, давно не общались.\nklaster: Мягко сказано... Ты куда пропал?\nSergeyM: Надо было уехать, для твоего же блага.\nklaster: Это ты так извиняешься? Ты меня бросил!\nSergeyM: Прости меня. Я не хотел тебя оставлять, но меня искали опасные люди.\nSergeyM: Я надеялся, что ты поймёшь.\nklaster: А почему не сказал?\nSergeyM: Не хотел тебя ввязывать в проблемы.\nSergeyM: Мне надо одно дело закончить, и я смогу вернуться. Но мне очень нужна твоя помощь.\nklaster: И что тебе от меня надо?\nSergeyM: В одном защищённом хранилище есть файлы, которые надо скачать и передать мне.\nSergeyM: Проблема в том, что там серьёзное шифрование, на нескольких уровнях.\nSergeyM: Вот тут-то твоя золотая голова и пригодится.\nklaster: Ты хочешь чтобы я взломал что-то?\nSergeyM: В общих словах, да. Не беспокойся, ты не рискуешь. Всё через наш шлюз.\nSergeyM: Одно дело, и я смогу вернуться к тебе, сынишка. Навсегда.\n_______ EOF ________")
         }
-        else if (filename === 'chat_save_08.04.XXXX.txt'){
+        else if (filename === 'chat_save_08.04.XXXX.txt' && path === '~/b-12/'){
             this.echo("klaster: Всё, отправляю последний архив.\ngater: Отличная работа!\nSergeyM: Хорошо сделано!\nklaster: Спасибо. Когда вернёшься домой, пап?\nSergeyM: Совсем скоро. Ещё немного работы осталось, и я свободен.\nklaster: Совсем скоро, это когда?\nSergeyM: Не знаю. Работа у меня изменчивая.\ngater: Господа, прошу извинить, но за @klaster выехали. По камерам вижу\nklaster: Что? Кто едет?\ngater: Для тебя не особо важно. Почисти все носители. И спектрум свой сломай.\nklaster: Что? Я же через ваш шлюз работал!\ngater: Бывает…\ngater: Поторопись, они совсем скоро к тебе приедут, по камерам вижу.\nklaster: Кто?\ngater: Серьёзные господа. Те, чей шлюз ты взломал.\nklaster: Это те ребята, что за отцом гонялись?\nSergeyM: Да\nSergeyM: Поторопись, в общем. Сотри всю информацию о нас, желательно вообще забудь. Прощай.\nklaster: Чего? Пап, ты же обещал! Что всё будет безопасно! Что ты вернёшься!\ngater: Твой отец мёртв. Прощай, и спасибо за твои услуги!\nklaster: Чего?\nSYSTEM: ПОЛУЧАТЕЛЬ НЕ ДОСТУПЕН\nklaster: Ты куда делся!\nSYSTEM: ПОЛУЧАТЕЛЬ НЕ ДОСТУПЕН\nklaster: Сука!\nSYSTEM: ПОЛУЧАТЕЛЬ НЕ ДОСТУПЕН")
         }
-        else if (filename === 'toscpstaff.txt'){
+        else if (filename === 'toscpstaff.txt' && path === '~'){
             this.echo("Этот документ призван помочь освоится в этом окружении.\nНесмотря на то, что ZX Spectrum имеет очень простую ОС с интерпретатором BASIC, тут всё очень похоже на UNIX. Это потому что терминал так работает."),
             this.echo("ZX Spectrum в этой системе – не более чем процессор с кэш памятью.\nВесь интерфейс общения с системой сосредоточен в терминальном сервере на RISC-V, потому и похожесть на никсы."),
             this.echo("Файлы здесь тоже работают не так, как на оригинальном спектруме.\nБлагодаря терминалу файлы, доступные вам, монтируются в вашу домашнюю папку с различных носителей. Очень удобно."),
-            this.echo("Для не понимающих английский - что вы тут делаете вообще? Но всё же я оставлю список команд и большее описание некоторых из них"),
+            this.echo("Для не понимающих английский - что вы тут делаете вообще? Но всё же я оставлю список команд и большее описание некоторых из них\n----------"),
             this.echo("ls - выводит список файлов и папок в текущей папке\ncat <имяфайла> - выводит содержимое файла\nrm <имяфайла> - удаляет файл (если прав хватит)\nps - список процессов, которые были запущены на спектруме текущей терминальной сессией\nreset - сбрасывает состояние терминала и очищает таблицы памяти. Как будто вы снова подключились."),
-            this.echo("info - выводит информацию о текущей терминальной сессии\nmembank <адрес сегмента>.<ключ -- необязательно> - поскольку Zilog Z80 - процессор без защищённого режима, \n  у пользователя есть возможность обратиться к любому сегменту памяти. Правда, не совсем к любому.\n  Терминал ограничивает доступ к памяти спектрума, принадлежащей другим сессиям.\n  Некоторая память может быть зашифрована, потому можно к адресу приложить ключ, в формате адрес.ключ."),
+            this.echo("info - выводит информацию о текущей терминальной сессии\nmembank <адрес сегмента>.<ключ -- необязательно> - поскольку Zilog Z80 - процессор без защищённого режима, \n  у пользователя есть возможность обратиться к любому сегменту памяти. Правда, не совсем к любому.\n  Терминал ограничивает доступ к памяти спектрума, принадлежащей другим сессиям.\n  Некоторая память может быть зашифрована, потому можно к адресу приложить ключ, в формате адрес.ключ.\n----------"),
             this.echo("Кстати, касательно памяти. По какой-то странной причине,\nво всех терминальных сессиях адрес сегмента 0xffa0 возвращает одинаковые данные, переписать сегмент не получается.\nПонять, что это такое, пока не удаётся. Терминал сам не адресует эту память программам, так что можешь о ней не волноваться.")
         }
-        else if (filename === 'dadletter.txt'){
+        else if (filename === 'dadletter.txt' && path === '~/b-12/'){
             this.echo("Как же вы все заебали! Как только жена моя померла, так вы все в гандонов превратились! CPUID спектрума больше души в себе содержит, чем каждый из вас. Я пьяным сяду за руль и разьебусь о что-нибудь! ИДИТЕ В ЖОПУ!")
         }
         else {
@@ -77,7 +127,8 @@ $('body').terminal({
         }
     }
 }, {
-    greetings: 'Welcome to SCP Linux 14.02 (GNU/Linux 6.15.1-scpmod RISC-V 64-bit) \n \n ZXPOWER limited access terminal.\n\nEstablishing remote console connection to SCP-1461 endpoint...\nSecuring connection...\nRSA handshake complete...\n---------------\nAccess mode: webgateway\nUser privileges: RESTRICTED\nMultiuser mode: SHARED, PROTECTED\nCPU: Zilog z80\nSystem clock speed: 61.2 Ghz\n---------------\nAvailable resources:\n  Chip memory: 8kb\n  Swapped memory: 2gb\n  CPU time: 0.2\n  I/O accessable:\n    Cassette library: connected, restricted\n    Floppy Disc multistorage: connected, restricted\n    HDD farm: connected, forbidden\n    SSD/flash storage: connected, forbidden\n\nFor expanded access rights contact curator.\n\nTunneling connection to SCP-1461 complete!\n Type "help" for more info.'
+    greetings: 'Welcome to SCP Linux 14.02 (GNU/Linux 6.15.1-scpmod RISC-V 64-bit) \n \n ZXPOWER limited access terminal.\n\nEstablishing remote console connection to SCP-1461 endpoint...\nSecuring connection...\nRSA handshake complete...\n---------------\nAccess mode: webgateway\nUser privileges: RESTRICTED\nMultiuser mode: SHARED, PROTECTED\nCPU: Zilog z80\nSystem clock speed: 61.2 Ghz\n---------------\nAvailable resources:\n  Chip memory: 8kb\n  Swapped memory: 2gb\n  CPU time: 0.2\n  I/O accessable:\n    Cassette library: connected, restricted\n    Floppy Disc multistorage: connected, restricted\n    HDD farm: connected, forbidden\n    SSD/flash storage: connected, forbidden\n\nFor expanded access rights contact curator.\n\nTunneling connection to SCP-1461 complete!\n Type "help" for more info.',
+    prompt
 });
 </script>
 </body>
